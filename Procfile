@@ -1,1 +1,1 @@
-gunicorn banhang.wsgi --log-file -
+web: gunicorn banhang.wsgi --log-file -
