@@ -1,1 +1,1 @@
-gunicorn mysite.wsgi --log-file -
+gunicorn banhang.wsgi --log-file -
