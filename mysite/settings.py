@@ -25,11 +25,11 @@ SECRET_KEY = 'fai_ib8s5utv-0h_l(y2w(m)6s%oh321*m5ahg021$nv1!)k^p'
 DEBUG = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'dang12.10.1999@gmail.com'
-EMAIL_HOST_PASSWORD = 'Dang_121099'
+EMAIL_HOST_USER = 'dang1210@zohomail.com'
+EMAIL_HOST_PASSWORD = 'Dang_1210'
 
 
 ALLOWED_HOSTS = ['ihaidangi.herokuapp.com', '127.0.0.1']
