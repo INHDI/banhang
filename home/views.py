@@ -138,4 +138,4 @@ def SendPlainEmail(request):
     email = EmailMessage(subject, message, EMAIL_HOST_USER, [mail_id])
     email.content_subtype = 'html'
     email.send()
-    return HttpResponse("Sent")
+    return HttpResponse("<h1>Cảm ơn bạn đã đặt hàng bên cửa hàng chúng tôi. Mời bạn kiểm tra email của mình để kiểm tra đơn hàng</h1>")
