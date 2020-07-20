@@ -5,6 +5,12 @@ from django.http import HttpResponse
 from .models import *
 from .utils import cookie_cart, cart_data
 import json
+from django.core.mail import send_mail, EmailMessage
+from mysite.settings import EMAIL_HOST_USER
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 # Create your views here.
@@ -89,3 +95,47 @@ class Checkout(View):
             return HttpResponse('Lưu oke')
         else:
             return HttpResponse('Không lưu được')
+
+
+def sendanemail(request):
+    c = LoaiSPModel.objects.all()
+    return render(request, "home/email_template.html", {'loaisp': c})
+
+
+def SendPlainEmail(request):
+    donhangtong = ('')
+    sanpham = SanPhamModel.objects.all()
+    for a in sanpham:
+        ten = 'ten_' + str(a)
+        mess_ten = request.POST.get(ten, '')
+        gia = 'gia_' + str(a)
+        mess_gia = request.POST.get(gia, '')
+        soluong = 'soluong_' + str(a)
+        mess_soluong = request.POST.get(soluong, '')
+
+        donhang = (
+                   '<strong>Tên Sản Phẩm:</strong>' + mess_ten + '<br>' +
+                   '<strong>Giá Sản Phẩm:</strong>' + mess_gia + '<br>' +
+                   '<strong>Số Lượng:</strong>' + mess_soluong+ '<br>' )
+        donhangtong =(donhangtong+donhang)
+    print(donhangtong)
+
+
+    hoten = request.POST.get('hoten', '')
+    diachi = request.POST.get('diachi', '')
+    sdt = request.POST.get('sdt', '')
+    thanhtien = request.POST.get('thanhtien', '')
+    message = (''
+               '<h1>XÁC NHẬN ĐƠN HÀNG</h1>' +
+               '<strong>Họ Và Tên:</strong>' + hoten + '<br>' +
+               '<strong>Địa Chỉ Nhận Hàng:</strong>' + diachi + '<br>' +
+               '<strong>Số Điện Thoại Nhận Hàng:</strong>' + sdt + '<br>'+ '<h2>Đơn Hàng</h2>' +donhangtong+'<br>' +
+               '<strong>Tổng Tiền:</strong>' + thanhtien + '<br>' +
+               '<p>Cám ơn quý khách đã mua hàng tại Shop của chúng tôi, bộ phận giao hàng sẽ liên hệ với quý khách để xác nhận sau 5 phút kể từ khi đặt hàng thành công và chuyển hàng đến quý khách chậm nhất sau 24 tiếng.</p>')
+    print('a', message)
+    subject = ('Bạn đã đặt hàng từ shop thành công!!!')
+    mail_id = request.POST.get('email', '')
+    email = EmailMessage(subject, message, EMAIL_HOST_USER, [mail_id])
+    email.content_subtype = 'html'
+    email.send()
+    return HttpResponse("Sent")
